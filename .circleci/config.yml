@@ -54,25 +54,14 @@ workflows:
           name: build-and-test
           system-image: system-images;android-23;google_apis;x86
           test-command: ./gradlew assemble sample:connectedDebugAndroidTest
-          filters:
-            tags:
-              only: /^[0-9]+.*/
       - hold-for-approval:
           type: approval
           requires:
             - build-and-test
-          filters:
-            tags:
-              only: /^[0-9]+.*/
-            branches:
-              ignore: /.*/
       - deploy-to-sonatype:
           name: Deploy to Maven Central
           requires:
             - hold-for-approval
-          filters:
-            tags:
-              only: /^[0-9]+.*/
 
   nightly-snapshot:
     when: << pipeline.parameters.run-schedule >>
